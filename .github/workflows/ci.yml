@@ -1,7 +1,7 @@
 name: CI
 
 on:
-  push: 
+  push:
     branches: [main, develop]
   pull_request:
     branches: [main, develop]
@@ -9,15 +9,25 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        proyecto: [hola-mundo, prestamos-lab]
+    defaults:
+      run:
+        working-directory: ${{ matrix.proyecto }}
     steps:
       - name: Checkout codigo
         uses: actions/checkout@v4
-      - name: Configurar Node.js 
-        uses: actions/setup-node@v4 
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
+          cache-dependency-path: ${{ matrix.proyecto }}/package-lock.json
       - name: Instalar dependencias (los pollitos)
-        run: npm install
+        run: npm ci
+      - name: Revisar codigo (lint)
+        run: npm run lint
       - name: Compilar proyecto
         run: npm run build
