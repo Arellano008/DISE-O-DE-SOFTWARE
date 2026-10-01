@@ -3,6 +3,8 @@ import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
+import Catalogo from './components/Catalogo'
+import { equipos } from './data/equipos'
 
 function App() {
   const total = 5
@@ -38,6 +40,8 @@ function App() {
           <button type="button" onClick={devolver} disabled={disponibles === total} className="counterplus">
             Devolver
           </button>
+          <h1>Laboratorio-Prestamos</h1>
+          <Catalogo equipos={equipos}/>
         </main>
       </section>
     </>
