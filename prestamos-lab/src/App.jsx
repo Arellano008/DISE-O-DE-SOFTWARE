@@ -5,10 +5,20 @@ import viteLogo from './assets/vite.svg'
 import './App.css'
 import Catalogo from './components/Catalogo'
 import { equipos } from './data/equipos'
+import Solicitud from './components/Solicitud'
 
 function App() {
   const total = 5
   const [disponibles, setDisponibles] = useState(total)
+  const [solicitados, setSolicitados] = useState([])
+
+  function agregar(equipo) {
+    setSolicitados([...solicitados, equipo])
+  }
+
+  function quitar(id) {
+    setSolicitados(solicitados.filter((e) => e.id !== id))
+  }
 
   function prestar() {
     setDisponibles((d) => (d > 0 ? d - 1 : d))
@@ -32,6 +42,7 @@ function App() {
           <h2>Disponibles: {disponibles}</h2>
         </div>
         <main>
+          <Solicitud solicitados={solicitados} onQuitar={quitar}></Solicitud>
           <h2> Raspberry Pi 5</h2>
           <p>{disponibles} de {total} disponibles</p>
           <button type="button" onClick={prestar} disabled={disponibles === 0} className="counterminus">
@@ -41,7 +52,7 @@ function App() {
             Devolver
           </button>
           <h1>Laboratorio-Prestamos</h1>
-          <Catalogo equipos={equipos}/>
+          <Catalogo equipos={equipos} solicitados={solicitados} onAgregar={agregar}/>
         </main>
       </section>
     </>
